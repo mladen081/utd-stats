@@ -1,16 +1,17 @@
-FROM jelastic/maven:3.9.5-openjdk-21 AS build
+# Use an official OpenJDK runtime as a parent image
+ FROM jelastic/maven:3.9.5-openjdk-21 AS build
 ####################
-COPY . .
+ COPY . .
 ####################
-RUN mvn clean package -DskipTests
+ RUN mvn clean package -DskipTests
 ####################
-FROM openjdk:21-jdk-slim
+ FROM openjdk:21-jdk-slim
 ####################
-COPY --from=build /root/target/match-0.0.1-SNAPSHOT.jar match.jar
+ COPY --from=build /target/utd-stats-0.0.1-SNAPSHOT.jar utd.jar
 ####################
-EXPOSE 8080
+ EXPOSE 8080
 ####################
-ENTRYPOINT ["java", "-jar", "match.jar"]
+ ENTRYPOINT ["java", "-jar", "utd.jar"]
 
 #####
 #####
